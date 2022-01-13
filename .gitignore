@@ -1,0 +1,12 @@
+# Virtual environment
+/venv/
+
+# IDE files
+.idea/
+*.iml
+
+# mypy
+.mypy_cache/
+
+# pytest
+.pytest_cache/
