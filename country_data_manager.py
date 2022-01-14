@@ -24,9 +24,8 @@ class CountryDataManager:
                         filtered_output.append(country_name)
         return filtered_output
 
-
-
     def list_cities(self, country: str, filters: Dict[str, Optional[str]] = None) -> List[str]:
         # todo: implement getting cities for a country from self._data with filtering, ignore case, see tests.py and
         #  README.md for more details
+        city_list = []
         pass
