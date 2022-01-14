@@ -2,7 +2,7 @@ name: Flask CI on dev branch
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ origin/dev ]
 
 
 jobs:
