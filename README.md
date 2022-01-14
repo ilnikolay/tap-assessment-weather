@@ -109,5 +109,3 @@ The software is a REST API that helps you browse countries and cities, and shows
         - build a container of the app
         - deploy it to Docker Hub
 - Keep your git history nice and tidy with meaningful commits all the way
-
-
