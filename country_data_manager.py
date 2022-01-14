@@ -28,4 +28,18 @@ class CountryDataManager:
         # todo: implement getting cities for a country from self._data with filtering, ignore case, see tests.py and
         #  README.md for more details
         city_list = []
-        pass
+        if filters == None:
+            for countries in self._data:
+                if country == countries:
+                    for city in countries:
+                        city_list.append(city)
+        else:
+            for country_name, city_name in self._data.items():
+                if country_name == country:
+                    for filters_key, key_value in filters.items():
+                        for city in city_name:
+                            if filters_key == 'contains' and key_value.lower() in city.lower():
+                                city_list.append(city)
+                            if filters_key == 'starts_with' and city.lower().startswith(key_value.lower()):
+                                city_list.append(city)
+        return city_list
