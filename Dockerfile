@@ -8,6 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-ENTRYPOINT [ "sh" ]
-
-CMD ["flask", "run"]
+ENTRYPOINT [ "python", "app.py" ]
