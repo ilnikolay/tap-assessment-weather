@@ -1,0 +1,57 @@
+name: Flask app
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+  pull_request:
+    branches:
+      - main
+      - staging
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+    - name: Lint test
+      run: pylint *.py
+    - name: MyPy test
+      run: mypy --show-error-codes .
+    - name: Test with pytest
+      run: py.test --junitxml results.xml app.py
+    - name: Upload Test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: results.xml
+        path: results.xml
+  
+
+  DockerBuild:
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Docker login
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Docker build
+      env:
+        DOCKER_IMAGE: ilniko/weatherapp
+        DOCKER_TAG: latest
+      run: |
+        docker build -t ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }} .
+        docker push ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}
