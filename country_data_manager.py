@@ -7,39 +7,27 @@ class CountryDataManager:
     def __init__(self, filename: str) -> None:
         self._data = load_countries_from_file(filename)
 
-    def list_countries(self, filters: Dict[str, Optional[str]] = None) -> List[str]:
-        # todo: implement getting countries from self._data with filtering, ignore case, see tests.py and README.md
-        #  for more details
-
-        filtered_output = []
-        if filters == None:
-            for country_name in self._data:
-                filtered_output.append(country_name)
+    @staticmethod
+    def filt_func(filters, c_name: str):
+        if filters is None or not any(filters.values()):
+            return True
+        if all(filters.values()) and len(filters) == 2:
+            if filters['contains'].lower() in c_name.lower() and \
+                c_name.lower().startswith(filters['starts_with'].lower()):
+                return True
         else:
-            for country_name in self._data:
-                for filters_key, key_value in filters.items():
-                    if filters_key == 'contains' and key_value.lower() in country_name.lower():
-                        filtered_output.append(country_name)
-                    if filters_key == 'starts_with' and country_name.lower().startswith(key_value.lower()):
-                        filtered_output.append(country_name)
+            try:
+                return bool(filters['contains'].lower() in c_name.lower())
+            except (KeyError, AttributeError):
+                return bool(c_name.lower().startswith(filters['starts_with'].lower()))
+        return False
+
+    def list_countries(self, filters: Dict[str, Optional[str]] = None) -> List[str]:
+        filtered_output = [country for country in self._data if self.filt_func(filters,country)]
         return filtered_output
 
     def list_cities(self, country: str, filters: Dict[str, Optional[str]] = None) -> List[str]:
-        # todo: implement getting cities for a country from self._data with filtering, ignore case, see tests.py and
-        #  README.md for more details
-        city_list = []
-        if filters == None:
-            for countries in self._data:
-                if country == countries:
-                    for city in countries:
-                        city_list.append(city)
-        else:
-            for country_name, city_name in self._data.items():
-                if country_name == country:
-                    for filters_key, key_value in filters.items():
-                        for city in city_name:
-                            if filters_key == 'contains' and key_value.lower() in city.lower():
-                                city_list.append(city)
-                            if filters_key == 'starts_with' and city.lower().startswith(key_value.lower()):
-                                city_list.append(city)
+        for country_name, cities in self._data.items():
+            if country_name == country:
+                city_list = [city for city in cities if self.filt_func(filters,city)]
         return city_list

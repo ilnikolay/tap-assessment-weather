@@ -11,8 +11,6 @@ current_dir = dirname(realpath(__file__))
 manager = CountryDataManager(f"{current_dir}{sep}data{sep}countries.json")
 
 
-# todo: Fix syntax errors
-
 @app.route('/country', strict_slashes=False)
 def list_all_countries() -> Response:
     return jsonify(manager.list_countries(filters={
