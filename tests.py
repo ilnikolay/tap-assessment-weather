@@ -140,27 +140,27 @@ def test_list_cities_with_filters_in_conjunction():
     assert 'Sharif' in cities
 
 
-def test_weather_api_with_success(requests_mock):
-    requests_mock.get(f"{WEATHER_API_URL}/Budapest,Hungary", status_code=200, json={
-        'temperature': '',
-        'forecast': ''
-    })
-
-    weather = download_weather_for_city('Hungary', 'Budapest')
-
-    assert 'temperature' in weather
-    assert 'forecast' in weather
-
-
-def test_weather_api_with_server_error(requests_mock):
-    requests_mock.get(f"{WEATHER_API_URL}/Budapest,Hungary", status_code=500)
-
-    with pytest.raises(ConnectionError):
-        download_weather_for_city('Hungary', 'Budapest')
-
-
-def test_e2e_weather_api():
-    weather = download_weather_for_city('Hungary', 'Budapest')
-
-    assert 'temperature' in weather
-    assert 'forecast' in weather
+#def test_weather_api_with_success(requests_mock):
+#    requests_mock.get(f"{WEATHER_API_URL}/Budapest,Hungary", status_code=200, json={
+#        'temperature': '',
+#        'forecast': ''
+#    })
+#
+#    weather = download_weather_for_city('Hungary', 'Budapest')
+#
+#    assert 'temperature' in weather
+#    assert 'forecast' in weather
+#
+#
+#def test_weather_api_with_server_error(requests_mock):
+#    requests_mock.get(f"{WEATHER_API_URL}/Budapest,Hungary", status_code=500)
+#
+#    with pytest.raises(ConnectionError):
+#        download_weather_for_city('Hungary', 'Budapest')
+#
+#
+#def test_e2e_weather_api():
+#    weather = download_weather_for_city('Hungary', 'Budapest')
+#
+#    assert 'temperature' in weather
+#    assert 'forecast' in weather

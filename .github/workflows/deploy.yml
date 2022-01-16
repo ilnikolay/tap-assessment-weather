@@ -6,6 +6,12 @@ on:
       - main
       - staging
 
+  pull_request:
+    branches:
+      - main
+      - staging
+
+
 
 jobs:
   build:
@@ -20,10 +26,12 @@ jobs:
         python-version: "3.10"
     - name: Install dependencies
       run: pip install -r requirements.txt
+    - name: Lint test
+      run: pylint *.py
     - name: MyPy test
       run: mypy --show-error-codes .
     - name: Test with pytest
-      run: py.test --junitxml results.xml app.py
+      run: py.test --junitxml results.xml tests.py
     - name: Upload Test results
       uses: actions/upload-artifact@v2
       with:
@@ -49,3 +57,4 @@ jobs:
       run: |
         docker build -t ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }} .
         docker push ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}
+
