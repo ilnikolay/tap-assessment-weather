@@ -4,3 +4,4 @@ types-requests~=2.27.6
 pytest~=6.2.5
 requests-mock~=1.9.3
 mypy~=0.931
+pylint
