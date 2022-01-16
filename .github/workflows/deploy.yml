@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - staging
+
   pull_request:
     branches:
       - main
       - staging
+
 
 
 jobs:
@@ -55,3 +57,4 @@ jobs:
       run: |
         docker build -t ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }} .
         docker push ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}
+
